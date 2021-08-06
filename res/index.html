@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>tl-rtc-video</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="css/swiper-bundle.min.css" media="all">
+  <link rel="stylesheet" href="css/comm.min.css" media="all">
+  <script type="text/javascript" src="js/swiper-bundle.min.js"></script>
+  <script type="text/javascript" src="js/socket.io.js"></script>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/axios.js"></script>
+</head>
+
+<body>
+
+  <div id="clientApp" v-cloak>
+
+    <div class="layui-fluid">
+      <h2 style="text-align: center;margin-bottom: 10px;">tl-rtc-video</h2>
+
+      <div class="layui-row">
+        <input type="text" name="title" autocomplete="off" class="layui-input" v-model="roomId" placeholder="输入房间编号"
+          :disabled="createDisabled">
+        <div class="layui-btn-container" style="padding: 10px;">
+          <button type="button" :class="[createClass,{'layui-btn-disabled':createDisabled}]" @click="createRoom()"
+            :disabled="createDisabled"> 创建/加入房间 </button>
+          <button style="position: absolute;right: 5%;" type="button"
+            :class="[exitClass,{'layui-btn-disabled':exitDisabled}]" @click="exitRoom()" :disabled="exitDisabled"> 退出房间
+          </button>
+        </div>
+        <div style="padding: 10px;" v-show="false">
+          <label for="showTools"> 显示工具栏 :</label>
+          <input type="radio" id="showTools" value="1" v-model="showTools">
+          <label for="closeTools" style="margin-left: 5%;"> 关闭工具栏 :</label>
+          <input type="radio" id="closeTools" value="0" v-model="showTools">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="layui-row">
+      <div v-show="showTools == 1">
+        <div class="layui-col-xs12 layui-col-md3">
+          <select v-model="expand.cssFilter.cssFilterChoose">　
+            <option :value="c.value" v-for="(c, index) in expand.cssFilter.cssFilterList">
+              {{c.name}}
+            </option>
+          </select>
+          <button @click="canvasHandler()">canvas截屏</button>
+          <canvas ref="self-canvas"></canvas>
+        </div>
+        <div class="layui-col-xs12 layui-col-md3">
+          <button ref="self-video-tape" @click="videoTapeHandler()">{{expand.videoTape.videoText}}</button>
+          <button ref="self-video-play" @click="videoPlayHandler()" disabled>播放</button>
+          <button ref="self-video-download" @click="videoDownLoadHandler()" disabled>下载</button>
+          <video ref="self-video-tape-video" playsinline loop></video>
+          <div v-show="expand.videoTape.errorMsg != ''">
+            输出 : {{expand.videoTape.errorMsg}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-row" style="width: 80%;margin-left: 10%;">
+      <div class="layui-col-xs12">
+        <div class="layui-card">
+          <div class="layui-card-header" style="word-break:break-all;height:auto;">
+            本人ID : {{socketId}}
+            <span style="right: 5%;position: absolute;">网络 : {{expand.bindwidth.bitrate}}kb/s</span>
+          </div>
+          <div class="layui-card-body" style="background: #f3dcdc;max-width: 600px;max-height: 400px;">
+            <video ref="self-video" autoplay style="width: 100%;height: 100%;"></video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-row swiper-container" style="background: white;width: 100%; margin-top: 40px;position: fixed;bottom: 40px;box-shadow: 0 0 5px 1px #999;">
+      <div class="swiper-wrapper" >
+        <div class="swiper-slide layui-col-xs12" v-for="remote in 120">
+          <div class="layui-card" style="margin: 10px !important;">
+            <div class="layui-card-header" style="word-break:break-all;height:auto;">其他人ID : xxxxx</div>
+            <div class="layui-card-body" style="background: #f3dcdc;">
+              <video :ref="remote.id" autoplay style="width: 100%;height: 100%;"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-row" style="bottom: 0px;position: fixed;z-index: 1000;background: white;width: 100%;margin-top: 20px;box-shadow: 0 0 5px 1px #999;">
+      <div class="layui-col-xs12" style="display: flex;">
+          <label class="layui-form-label" style="text-align: center;">发送给:{{messageSendTo}}</label>
+          <input type="text" name="message" autocomplete="off" class="layui-input" v-model="messageContent">
+          <button type="button" :class="[{'layui-btn-disabled':!messageContent},'layui-btn']">发送</button>
+        </div>
+    </div>
+
+  </div>
+
+
+  <script src="https://www.layuicdn.com/layui/layui.js"></script>
+  <script type="text/javascript" src="js/index.min.js"></script>
+  <script>
+    setTimeout(() => {
+      let clientWidth = document.body.clientWidth;
+      let slidesPerView = parseInt((clientWidth / 100))-2;
+      var mySwiper = new Swiper('.swiper-container', {
+        direction: 'horizontal', // 垂直切换选项
+        loop: false, // 循环模式选项
+        slidesPerView: slidesPerView,
+        // effect : "coverflow", //切换样式
+        observer: true,
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        }
+      })
+      mySwiper.scrollbar.$dragEl.css('background', '#ff6600');
+      mySwiper.scrollbar.$el.css('height', '4px');
+      window.swiper = mySwiper;
+    })
+
+    setTimeout(() => {
+      let clientWidth = document.body.clientWidth;
+      let slidesPerView = parseInt((clientWidth / 100))-2;
+      var mySwiper = new Swiper('.swiper-container', {
+        direction: 'horizontal', // 垂直切换选项
+        loop: false, // 循环模式选项
+        slidesPerView: slidesPerView,
+        // effect : "coverflow", //切换样式
+        observer: true,
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        }
+      })
+      mySwiper.scrollbar.$dragEl.css('background', '#ff6600');
+      mySwiper.scrollbar.$el.css('height', '4px');
+      window.swiper = mySwiper;
+    },500)
+
+    layui.config({}).extend({}).use(['index', 'form']);
+  </script>
+</body>
+
+</html>
