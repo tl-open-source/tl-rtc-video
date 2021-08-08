@@ -1,7 +1,7 @@
 {
     "ws" : {
-         "port": 8444,
-         "ssl_port": 8444,
+         "port": 8443,
+         "ssl_port": 8443,
          "ws_online": "wss://live.tsmblogs.cn"
     },
     "node" : {
