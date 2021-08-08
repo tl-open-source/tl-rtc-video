@@ -2,8 +2,76 @@
 var live = null;
 axios.get("/api/comm/initData",{}).then((initData)=>{
     let resData = initData.data;
+
+    //init swiperOther
+    function reCaculateSwiperOther(direction, slidesPerView){
+        if(window.swiperOther){
+          window.swiperOther.destroy(true,true);
+        }
+        var swiperOther = new Swiper('.swiperOther', {
+            direction: direction,
+            loop: false,
+            slidesPerView: slidesPerView,
+            observer: true,
+        })
+        window.swiperOther = swiperOther;
+    }
+  
+    setTimeout(() => {
+        let clientWidth = document.body.clientWidth;
+        let slidesPerView = parseInt((clientWidth / 100))-2;
+        //swiper count
+        if(slidesPerView >= 5){
+            slidesPerView = 5;
+        }
+
+        if(clientWidth >= 700){
+            reCaculateSwiperOther("vertical",slidesPerView)
+        }else{
+            reCaculateSwiperOther("horizontal",slidesPerView)
+        }
+    })
+
+    setTimeout(() => {
+        let clientWidth = document.body.clientWidth;
+        let slidesPerView = parseInt((clientWidth / 100))-2;
+        //swiper count
+        if(slidesPerView >= 5){
+            slidesPerView = 5;
+        }
+        
+        if(clientWidth >= 700){
+            reCaculateSwiperOther("vertical",slidesPerView)
+        }else{
+            reCaculateSwiperOther("horizontal",slidesPerView)
+        }
+    },500)
+
+
+    //init swiperComment
+    function reCaculateSwiperComment(direction, slidesPerView){
+        if(window.swiperComment){
+          window.swiperComment.destroy(true,true);
+        }
+        var swiperComment = new Swiper('.swiperComment', {
+            direction: direction,
+            loop: false,
+            slidesPerView: slidesPerView,
+            observer: true,
+        })
+        window.swiperComment = swiperComment;
+    }
+  
+    setTimeout(() => {
+        reCaculateSwiperComment("vertical",5)
+    },100)
+
+    setTimeout(() => {
+        reCaculateSwiperComment("vertical",5)
+    },600)
+
     live = new Vue({
-        el : '#clientApp',
+        el : '#liveApp',
         data : function () {
             let socket = null;
             if (io){
@@ -60,6 +128,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                 exitClass : 'layui-btn layui-btn-danger layui-btn-radius',
                 disableClass : ' layui-btn-disabled',
                 showTools :0,
+                selfVideoStyle : "width:80%;margin-left:10%",
 
                 messageSendTo : "",
                 messageContent : "",
@@ -69,6 +138,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                 remoteVideoList : [], //存储远程连接
                 remoteVideoMap : {}, //id对应的连接索引
                 localStream : null,
+                msgList : [], //消息列表
             }
             
         },
@@ -79,6 +149,10 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                     this.createDisabled = true;
                     this.exitDisabled = false;
                 }
+                this.remoteVideoList.push({
+                    id : this.roomId,
+                    name : "自己"
+                })
             },
             exitRoom : function () {
                 if (this.roomId) {
@@ -146,6 +220,11 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
             gotStream : function(stream){
                 this.$refs['self-video'].srcObject = stream;
                 this.localStream = stream;
+                this.remoteVideoList.push({
+                    id : this.roomId,
+                    name : "房主"
+                })
+                this.$refs[this.roomId].srcObject = stream;
             },
             addStream : function (rtcConnect,id,event) {
                 try{
@@ -251,6 +330,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                 let that = this;
                 //created [id,room,peers]
                 this.socket.on('created', async function (data) {
+                    that.touchResize();
                     console.log('created: ' + JSON.stringify(data));
                     //根据回应peers 循环创建WebRtcPeerConnection & 发送offer消息 [from,to,room,sdp]
                     that.socketId = data.id;
@@ -271,6 +351,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
 
                 //joined [id,room]
                 this.socket.on('joined', function (data) {
+                    that.touchResize();
                     console.log('joined: ' + JSON.stringify(data));
                     that.getOrCreateRtcConnect(data.from);
                 });
@@ -320,6 +401,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
 
                 //exit [from,room]
                 this.socket.on('exit', function (data) {
+                    that.touchResize();
                     console.log('exit: ' + JSON.stringify(data));
                     //判断是否为当前连接
                     var rtcConnect = that.rtcConns[data.from];
@@ -447,15 +529,41 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
             },
             reCaculateSwiperSize : function () {
                 let clientWidth = document.body.clientWidth;
-                let slidesPerView = parseInt((clientWidth / 100))-2;
+                let slidesPerView = parseInt((clientWidth / 100));
                 
+                //swiper count
                 if(slidesPerView >= 5){
                     slidesPerView = 5;
                 }
-                if(Object.keys(this.remoteVideoMap).length <= 3){
-                    slidesPerView = 3;
+                
+                //swiper css
+                if(clientWidth >= 700){
+                    reCaculateSwiperOther("vertical",slidesPerView)
+                }else{
+                    reCaculateSwiperOther("horizontal",slidesPerView)
                 }
-                window.swiper.params.slidesPerView = slidesPerView;
+
+                //selfvideo css
+                let selfVideoStyleLimit = parseInt((clientWidth - 700) / 100);
+                let widthPersent = 80-selfVideoStyleLimit*5;
+                if(widthPersent <= 40){
+                    widthPersent = 40;
+                }
+                if(widthPersent >= 70){
+                    widthPersent = 70;
+                }
+                if(clientWidth < 700){
+                    this.selfVideoStyle = `width:${80}%;`;
+                    this.selfVideoStyle += `margin-left:${10}%`;
+                }else{
+                    this.selfVideoStyle = `width:${widthPersent}%;`;
+                    if(widthPersent === 40){
+                        this.selfVideoStyle += `margin-left:${10}%`;
+                    }
+                    if(clientWidth > 1500){
+                        this.selfVideoStyle = `width:${widthPersent}%;`;
+                    }
+                }
             },
             touchResize : function() {
                 let that = this;
@@ -474,6 +582,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
             this.startCamera();
             this.socketListener();
             window.onresize = this.reCaculateSwiperSize;
+            this.reCaculateSwiperSize()
         },
         destroyed : function () {
         }

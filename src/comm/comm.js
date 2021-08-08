@@ -5,7 +5,7 @@ const webrtcConf = conf.webrtc;
 
 //获取ip地址,初始化等相关配置
 function initData(req,res) {
-     let localIp = utils.getLocalIP();
+     let localIp = utils.getLocalIP() || "127.0.0.1";
      let clientIp = utils.getClientIP(req);
      let isLocal = clientIp === '1';
 

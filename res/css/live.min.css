@@ -1,0 +1,127 @@
+html{
+     background-color: #f2f2f2;
+     color: #666;
+}
+[v-cloak]{
+     visibility: hidden !important; /*防止被覆盖*/
+ }
+
+video{
+     width: 100%;
+     height: 100%;
+ }
+.none {
+     -webkit-filter: none;
+     filter: none;
+}
+
+.blur {
+     -webkit-filter: blur(3px);
+     filter: blur(3px);
+}
+
+.grayscale {
+     -webkit-filter: grayscale(1);
+     filter: grayscale(1);
+}
+
+.invert {
+     -webkit-filter: invert(1);
+     filter: invert(1);
+}
+
+.sepia {
+     -webkit-filter: sepia(1);
+     filter: sepia(1);
+}
+.video-self{
+     display: flex;
+     height: 400px;
+}
+.video-content { 
+     width: 300px;
+     height: 300px;
+}
+.canvas-content {
+     width: 300px;
+     height: 300px;
+     margin-left: 40px;
+}
+.video-tape-content {
+     width: 500px;
+     height: 300px;
+     margin-left: 100px;
+}
+.screen-content {
+     width: 300px;
+     height: 300px;
+}
+.main{
+     margin: 0 auto;
+     max-width: 1300px;
+     margin-top: 50px;
+     width: 80%;
+     margin-left: 10%;
+}
+.selfVideoClass{
+     transition: all 1s;
+     -moz-transition: all 1s;
+     -webkit-transition: all 1s;
+     -o-transition: all 1s;
+}
+
+.remoteVideoClass {
+     background: white;
+     width: 30%;
+     height: 100%;
+     position: fixed;
+     right: 0px;
+     box-shadow: rgb(153 153 153) 0px 0px 5px 1px;
+     top: 0;
+}
+
+.sendMsgClass{
+     bottom: 0px;
+     position: fixed;
+     z-index: 1000;
+     background: white;
+     width: 100%;
+     margin-top: 20px;
+     box-shadow: 0 0 5px 1px #999;
+}
+
+.swiperComment{
+     height: 200px;
+}
+
+
+/* 900px以下 */
+@media screen and (max-width: 700px) {
+     .remoteVideoClass{
+          width: 100%;
+          position: fixed;
+          bottom: 40px;
+          margin-top: 40px;
+          height: auto;
+          top: auto;
+          right: auto;
+     }
+ }
+
+
+ /* 900px以上 */
+ @media screen and (min-width: 700px) {
+     .joinClass{
+          width: 68%;
+          margin-left: 0;
+     }
+ }
+ /* 765px到1000px */
+ @media screen and (min-width: 765px) and (max-width: 775px) {
+
+ }
+ @media screen and (min-width: 1000px) {
+
+ }
+
+/*# sourceMappingURL=live.min.css.map*/
