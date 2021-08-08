@@ -149,10 +149,6 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                     this.createDisabled = true;
                     this.exitDisabled = false;
                 }
-                this.remoteVideoList.push({
-                    id : this.roomId,
-                    name : "自己"
-                })
             },
             exitRoom : function () {
                 if (this.roomId) {
