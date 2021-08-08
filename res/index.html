@@ -98,16 +98,15 @@
           <div class="layui-panel" style="margin: 10px !important;">
             <div class="" style="word-break:break-all;height:auto;">自己 : {{socketId}}</div>
             <div class="" style="background: #f3dcdc;">
-              <video :ref="roomId" autoplay style="width: 100%;height: 100%;max-width: 400px;max-height: 400px;"></video>
+              <video :ref="roomId" autoplay ></video>
             </div>
           </div>
         </div>
         <div class="swiper-slide layui-col-xs12" v-for="remote in remoteVideoList">
-          
-          <div class="layui-panel" style="margin: 10px !important;" v-else>
+          <div class="layui-panel" style="margin: 10px !important;">
             <div class="" style="word-break:break-all;height:auto;">其他人ID : {{remote.id}}</div>
             <div class="" style="background: #f3dcdc;">
-              <video :ref="remote.id" autoplay style="width: 100%;height: 100%;max-width: 400px;max-height: 400px;"></video>
+              <video :ref="remote.id" autoplay ></video>
             </div>
           </div>
         </div>

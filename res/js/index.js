@@ -243,6 +243,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
                         })
                         this.remoteVideoMap[id] = this.remoteVideoList.length-1;
                     }
+                    
                     if(this.$refs[id] != undefined){
                         this.$refs[id]['0'].srcObject = event.streams[0];
                     }
