@@ -220,10 +220,6 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
             gotStream : function(stream){
                 this.$refs['self-video'].srcObject = stream;
                 this.localStream = stream;
-                this.remoteVideoList.push({
-                    id : this.roomId,
-                    name : "房主"
-                })
                 this.$refs[this.roomId].srcObject = stream;
             },
             addStream : function (rtcConnect,id,event) {
