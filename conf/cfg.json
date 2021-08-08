@@ -2,7 +2,7 @@
     "ws" : {
          "port": 8443,
          "ssl_port": 8443,
-         "ws_online": "wss://live.tsmblogs.cn"
+         "ws_online": ""
     },
     "node" : {
           "port" : 9092
@@ -10,6 +10,14 @@
     "webrtc" : {
           "iceServers": [{
                "urls": "stun:stun.xten.com"
+          },{
+               "urls": "turn:120.77.153.58:3478?transport=udp",
+               "credential": "tsm000000", 
+               "username": "im"
+          },{
+               "urls": "turn:121.41.201.231:3478?transport=udp",
+               "credential": "tsm000000", 
+               "username": "im"
           }],
          "options" : {
               "offerToReceiveAudio": 1,
