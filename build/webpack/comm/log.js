@@ -23,15 +23,15 @@ class Log {
     }
 
     log(content, tag = '1.0.0') {
-       fancyLog(this.addColor(`[CLI] ${tag}: `, 'log') + content);
+       fancyLog(this.addColor(`[TL-RTC-VIDEO] ${tag}: `, 'log') + content);
     }
 
     warn(content, tag = '1.0.0') {
-        fancyLog(this.addColor(`[CLI] ${tag}: `, 'warn') + content);
+        fancyLog(this.addColor(`[TL-RTC-VIDEO] ${tag}: `, 'warn') + content);
     }
 
     error(content, tag = '1.0.0') {
-        fancyLog(this.addColor(`[CLI] ${tag}: `, 'error') + content);
+        fancyLog(this.addColor(`[TL-RTC-VIDEO] ${tag}: `, 'error') + content);
     }
 }
 
