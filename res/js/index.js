@@ -350,6 +350,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
 
                 //offer [from,to,room,sdp]
                 this.socket.on('offer', function (data) {
+                    console.log("offer : ",data)
                     //获取peer
                     let rtcConnect = that.getOrCreateRtcConnect(data.from);
                     //构建RTCSessionDescription参数
@@ -366,6 +367,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
 
                 //answer [from,to,room,sdp]
                 this.socket.on('answer', function (data) {
+                    console.log("answer : ",data)
                     //获取peer
                     let rtcConnect = that.getOrCreateRtcConnect(data.from);
                     //构建RTCSessionDescription参数
@@ -376,6 +378,7 @@ axios.get("/api/comm/initData",{}).then((initData)=>{
 
                 //candidate  [from,to,room,candidate[sdpMid,sdpMLineIndex,sdp]]
                 this.socket.on('candidate', function (data) {
+                    console.log("candidate : ",data)
                     //获取Peer
                     let rtcConnect = that.getOrCreateRtcConnect(data.from);
                     let rtcIceCandidate = new RTCIceCandidate({
