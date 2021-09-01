@@ -1,12 +1,12 @@
 # tl-rtc-video
 
-#### 简介 : （tl webrtc video）用webrt在web端视频通讯，支持单人直播，多人会议，聊天等。
+#### 简介 : （tl webrtc video）用webrt在web端视频通讯，支持多人会议，聊天等。
 #### 优点 ： 跨终端，不限平台，方便使用，支持私有部署
 
 
 ## 准备
 
-    电脑安装好node，npm后进入项目目录
+    安装node，npm后进入项目目录
 
     npm install
 
@@ -16,9 +16,9 @@
 
 ## 测试环境 
 
-    本地局域网启动video-res : npm run dev
+    本地启动video-res : npm run dev
 
-    本地局域网启动video-socket : npm run devsocket
+    本地启动video-socket : npm run devsocket
 
 ## 线上环境 （需要配置wss）
 
@@ -54,4 +54,6 @@
 
     cd build/webpack 
 
-    npm run build 保持后台开启即可
+    npm run dev 保持后台开启即可
+
+    npm run pro 输出生产环境min
