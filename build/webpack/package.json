@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
-  "dependencies": {},
+  "dependencies": {
+    
+  },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
+    "@babel/core": "^7.15.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-optional-chaining": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.6.0",
@@ -67,7 +69,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node devBuild.js"
+    "dev": "node buildDev.js",
+    "pro": "node buildPro.js"
   },
   "keywords": [],
   "author": "",

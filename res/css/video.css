@@ -94,6 +94,47 @@ video{
      height: 200px;
 }
 
+.autoTitle{
+     text-align: center;
+     margin-bottom: 10px;
+}
+.autoClass{
+     transition: all 1s;
+     -moz-transition: all 1s;
+     -webkit-transition: all 1s;
+     -o-transition: all 1s;
+}
+
+
+.shareImg{
+     width:80px;
+     height: 80px;
+}
+.shareTips{
+     line-height: 80px;
+     margin-right: 10px;
+}
+.share{
+     text-align: center;
+     margin-bottom: 20px;
+     margin-top: -100px;
+     transition: all 0.5s;
+     -moz-transition: all 0.5s;
+     -webkit-transition: all 0.5s;
+     -o-transition: all 0.5s;
+}
+.shareSvg{
+     position: absolute;
+     top: 5px;
+     right: 10px;
+     width: 24px;
+     height: 24px;
+     cursor: pointer;
+}
+.shareClass{
+     margin-top: 50px;
+}
+
 
 /* 900px以下 */
 @media screen and (max-width: 700px) {
@@ -111,8 +152,8 @@ video{
 
  /* 900px以上 */
  @media screen and (min-width: 700px) {
-     .joinClass{
-          width: 68%;
+     .autoClass{
+          width: 67%;
           margin-left: 0;
      }
  }
@@ -123,5 +164,3 @@ video{
  @media screen and (min-width: 1000px) {
 
  }
-
-/*# sourceMappingURL=live.min.css.map*/
