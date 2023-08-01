@@ -2,11 +2,11 @@
 
 #### 简介 : （tl webrtc video）用webrt在web端视频通讯，支持多人会议，聊天等。
 #### 优点 ： 跨终端，不限平台，方便使用，支持私有部署
-#### 体验 ： https://im.iamtsm.cn/video  （多人视频聊天）
+#### 体验 ： https://im.iamtsm.cn/  （多人视频聊天）
 
-#### 体验 ： https://im.iamtsm.cn/live   （单人直播聊天）
+#### 体验 ： https://im.iamtsm.cn/   （单人直播聊天）
 
-#### 体验 ： https://im.iamtsm.cn/screen （多人屏幕共享）
+#### 体验 ： https://im.iamtsm.cn/ （多人屏幕共享）
 
 ## 准备
 
